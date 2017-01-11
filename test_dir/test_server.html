@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    </head>
+    <body ng-app="app1" ng-controller="cont1">
+        
+        <form name="myform" id="myform">
+            Username: <input type="text" id="uname" name="uname" ng-model="f_uname">
+            Email: <input type="text" id="email" name="email" ng-model="f_email">
+            <button type="submit" ng-click="call()">Submit</button>
+        </form>
+        
+        <div>{{ 5+5 }}</div>
+        <div>{{ me }}</div>
+        <div>{{ f_uname }}</div>
+        <div>{{ f_email }}</div>
+        <div>{{ myData }}</div>
+        
+        
+        <script>
+        var app = angular.module('app1', []);
+        app.controller('cont1', function($scope, $http) {
+           // $scope.f_uname='';
+          //  $scope.f_email='';
+            $scope.myData = 'hello';
+            
+            $scope.call =function(){
+                $scope.me = {uname : $scope.f_uname,email : $scope.f_email};
+            $http({
+                method: "post",
+                url: "server_process.php",
+                data: {
+                    uname: $scope.f_uname,
+                    email: $scope.f_email
+                }
+            //    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }//this is default no issues if not written
+            }).then(function(response) {
+                $scope.myData = response.data.records;
+            });
+                
+         /*   $http.post("server_process.php",myData1).then(function(response) {
+                $scope.myData = response.data.records;
+            });*/
+            };
+        });
+        </script>
+    </body>
+</html>
